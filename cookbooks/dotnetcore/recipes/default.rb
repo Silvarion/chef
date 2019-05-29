@@ -44,11 +44,13 @@ if node['os'] == 'linux'
                 remote_file "/etc/yum.repos.d/microsoft-prod.repo" do
                     source "https://packages.microsoft.com/config/fedora/27/prod.repo"
                     action :create
+                    notifies: :run, 'execute[update-dnf-cache]', :immediate
                 end
             when '28'
                 remote_file "/etc/yum.repos.d/microsoft-prod.repo" do
                     source "https://packages.microsoft.com/config/fedora/28/prod.repo"
                     action :create
+                    notifies: :run, 'execute[update-dnf-cache]', :immediate
                 end
             end
             execute 'update-dnf-cache' do
