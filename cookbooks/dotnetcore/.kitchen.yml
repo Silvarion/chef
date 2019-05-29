@@ -15,8 +15,8 @@ verifier:
 platforms:
   - name: centos-7
   - name: rhel-7
+  - name: fedora-27
   - name: ubuntu-18.04
-  - name: debian-9
 
 suites:
   - name: default
