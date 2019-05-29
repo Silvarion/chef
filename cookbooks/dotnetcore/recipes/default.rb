@@ -18,7 +18,7 @@ if node['os'] == 'linux'
                     source "https://packages.microsoft.com/config/rhel/6/packages-microsoft-prod.rpm"
                     action :create
                 end        
-            when '6'
+            when '7'
                 remote_file "#{Chef::Config[:file_cache_path]}/packages-microsoft-prod.rpm" do
                     source "https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm"
                     action :create
@@ -68,7 +68,7 @@ if node['os'] == 'linux'
             dpkg_package "ms-repo-prod-deb" do
                 source "#{Chef::Config[:file_cache_path]}/packages-microsoft-prod.deb"
                 action :install
-                notifies :update, 'apt-update[update-apt-cache]', :immediate
+                notifies :update, 'apt_update[update-apt-cache]', :immediate
             end
             apt_update 'update-apt-cache' do
                 ignore_failure true
