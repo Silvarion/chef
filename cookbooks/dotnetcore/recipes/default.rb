@@ -77,8 +77,7 @@ if node['os'] == 'linux'
         end
     end
     # Every Distro
-    package 'dotnet-core' do
-        name 'dotnet-sdk-2.2'
+    package 'dotnet-sdk-2.1' do
         action :install
     end
 end
