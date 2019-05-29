@@ -11,6 +11,6 @@ unless os.windows?
 end
 
 # This is an example test, replace it with your own test.
-describe package('dotnet-core-2'), do
+describe package('dotnet-core-2.1') do
   it { should be_installed }
 end

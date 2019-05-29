@@ -44,13 +44,13 @@ if node['os'] == 'linux'
                 remote_file "/etc/yum.repos.d/microsoft-prod.repo" do
                     source "https://packages.microsoft.com/config/fedora/27/prod.repo"
                     action :create
-                    notifies: :run, 'execute[update-dnf-cache]', :immediate
+                    notifies :run, 'execute[update-dnf-cache]', :immediate
                 end
             when '28'
                 remote_file "/etc/yum.repos.d/microsoft-prod.repo" do
                     source "https://packages.microsoft.com/config/fedora/28/prod.repo"
                     action :create
-                    notifies: :run, 'execute[update-dnf-cache]', :immediate
+                    notifies :run, 'execute[update-dnf-cache]', :immediate
                 end
             end
             execute 'update-dnf-cache' do
@@ -63,7 +63,7 @@ if node['os'] == 'linux'
         case node['platform']
         # Ubuntu
         when 'ubuntu'
-            remote_file "#{Chef::Config[:file_cache_path]}/packages-microsoft-prod.rpm" do
+            remote_file "#{Chef::Config[:file_cache_path]}/packages-microsoft-prod.deb" do
             source "https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb"
             action :create
             end        
@@ -79,7 +79,7 @@ if node['os'] == 'linux'
         end
     end
     # Every Distro
-    package 'dotnet-sdk-2' do
+    package 'dotnet-sdk-2.1' do
         action :install
     end
 end
