@@ -11,11 +11,19 @@ if node['os'] == 'linux'
     when 'rhel'
         case node['platform']
         # CentOS
-        when 'centos','oracle'
-            remote_file "#{Chef::Config[:file_cache_path]}/packages-microsoft-prod.rpm" do
-                source "https://packages.microsoft.com/config/rhel/<%= node.platform_version.split('.')[0] %>/packages-microsoft-prod.rpm"
-                action :create
-            end        
+        when 'centos','oracle','rhel'
+            case node['platform_version'].split('.')[0]
+            when '6'
+                remote_file "#{Chef::Config[:file_cache_path]}/packages-microsoft-prod.rpm" do
+                    source "https://packages.microsoft.com/config/rhel/6/packages-microsoft-prod.rpm"
+                    action :create
+                end        
+            when '6'
+                remote_file "#{Chef::Config[:file_cache_path]}/packages-microsoft-prod.rpm" do
+                    source "https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm"
+                    action :create
+                end        
+            end
             rpm_package "ms-repo-prod-rpm" do
                 source "#{Chef::Config[:file_cache_path]}/packages-microsoft-prod.rpm"
                 action :install
@@ -31,10 +39,18 @@ if node['os'] == 'linux'
                 command 'rpm --import https://packages.microsoft.com/keys/microsoft.asc'
                 action :run
             end
-            remote_file "/etc/yum.repos.d/microsoft-prod.repo" do
-                source "https://packages.microsoft.com/config/<%= node.platform %>/<%= node.platform_version %>/prod.repo"
-                action :create
-            end        
+            case node['platform_version']
+            when '27'
+                remote_file "/etc/yum.repos.d/microsoft-prod.repo" do
+                    source "https://packages.microsoft.com/config/fedora/27/prod.repo"
+                    action :create
+                end
+            when '28'
+                remote_file "/etc/yum.repos.d/microsoft-prod.repo" do
+                    source "https://packages.microsoft.com/config/fedora/28/prod.repo"
+                    action :create
+                end
+            end
             execute 'update-dnf-cache' do
                 command 'dnf update'
                 action :nothing
@@ -46,7 +62,7 @@ if node['os'] == 'linux'
         # Ubuntu
         when 'ubuntu'
             remote_file "#{Chef::Config[:file_cache_path]}/packages-microsoft-prod.rpm" do
-            source "https://packages.microsoft.com/config/ubuntu/<%= node.platform_version %>/packages-microsoft-prod.deb"
+            source "https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb"
             action :create
             end        
             dpkg_package "ms-repo-prod-deb" do
